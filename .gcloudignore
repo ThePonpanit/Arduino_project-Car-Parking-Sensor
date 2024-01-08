@@ -36,3 +36,7 @@
 # Ignored by the build system
 
 /setup.cfg
+
+# Exclude the virtual environment directory
+
+venv/

@@ -3,12 +3,25 @@ from pydantic import BaseModel
 from typing import List
 from google.cloud import firestore
 from datetime import datetime
-from dotenv import load_dotenv
-
-load_dotenv()
-
+import os
 
 app = FastAPI()
+
+# Load environment variables in development environment
+if os.environ.get("ENV") == "development":
+    from dotenv import load_dotenv
+    load_dotenv()
+
+# Get the current directory of the file
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the full path to the credentials file
+credentials_path = os.path.join(current_dir, 'CREDENTIALS.json')
+
+# Set the GOOGLE_APPLICATION_CREDENTIALS environment variable
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
+
+# Initialize Firestore client
 db = firestore.Client()
 
 class SensorData(BaseModel):
@@ -33,7 +46,6 @@ async def receive_data(sensor_data: List[SensorData]):
         })
 
     return {"message": "Data processed and stored in Firestore"}
-
 
 @app.get("/_ah/health")
 def health_check():

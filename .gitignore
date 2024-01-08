@@ -7,3 +7,5 @@
 
 #the venv
 venv/
+
+.gcloudignore
