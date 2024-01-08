@@ -11,6 +11,10 @@ class SensorData(BaseModel):
     uid: str
     distance: int
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to my FastAPI application!"}
+
 @app.post("/receive_data")
 async def receive_data(sensor_data: List[SensorData]):
     for data in sensor_data:
