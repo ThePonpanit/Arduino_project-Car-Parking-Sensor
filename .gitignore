@@ -1,3 +1,13 @@
+# General Python ignores
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-log.txt
+
 # ignore all .c files
 *.c
 *.env
@@ -5,7 +15,9 @@
 # ignore all .json files
 *.json
 
-#the venv
-venv/
+# Specific files
+config.py
+CREDENTIALS.json
 
+# Google Cloud specific
 .gcloudignore
