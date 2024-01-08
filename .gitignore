@@ -1,5 +1,9 @@
 # ignore all .c files
 *.c
+*.env
 
 # ignore all .json files
 *.json
+
+#the venv
+venv/

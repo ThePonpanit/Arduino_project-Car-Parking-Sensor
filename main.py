@@ -3,6 +3,10 @@ from pydantic import BaseModel
 from typing import List
 from google.cloud import firestore
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 app = FastAPI()
 db = firestore.Client()
