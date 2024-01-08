@@ -14,16 +14,16 @@ class SensorData(BaseModel):
 @app.post("/receive_data")
 async def receive_data(sensor_data: List[SensorData]):
     for data in sensor_data:
-        status = "Occupied" if data.distance < 100 else "Free"  # adjust as per your logic
+        status = "Occupied" if data.distance < 100 else "Free"
         # Add data to Firestore
         doc_ref = db.collection('parking_sensors').document()
         doc_ref.set({
             'uid': data.uid,
             'distance': data.distance,
-            'timestamp': datetime.utcnow(),  # Firestore converts this to its Timestamp type
+            'timestamp': datetime.utcnow(),
             'status': status
         })
-        # Your existing logic for notifications, etc.
+
     return {"message": "Data processed and stored in Firestore"}
 
 
