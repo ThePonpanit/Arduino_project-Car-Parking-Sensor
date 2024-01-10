@@ -1,0 +1,119 @@
+body {
+  font-family: "Prompt", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f7f7;
+  text-align: center;
+  color: #333;
+}
+
+.dataContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* align-content: flex-start;
+    */
+  /* align-items: center;
+    justify-content: center;
+    */
+}
+.main-container {
+  display: flex;
+  flex-direction: row; /* Align children in a row */
+  justify-content: center; /* Center the children horizontally */
+  align-items: flex-start; /* Align children to the start of the cross axis */
+  gap: 20px; /* Add some space between the children */
+  padding: 20px; /* Add some padding around */
+  max-width: 1200px; /* Set a maximum width for better control */
+  margin: auto; /* Center the container */
+}
+
+.content-section {
+  flex: 1; /* Allow each section to take equal space */
+  margin: 0; /* Reset margin */
+}
+h1 {
+  color: #0275d8;
+  /* A nice shade of blue */
+  margin-top: 20px;
+  font-size: 28px;
+  /* Larger font size for heading */
+}
+h2 {
+  font-size: 15px;
+  color: #282a35;
+  margin-top: -25px;
+  /* Reduced negative margin */
+}
+.data-list {
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  width: 80%;
+  max-width: 600px;
+  /* Limit maximum width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  /* Rounded corners */
+}
+.data-item {
+  margin-top: 5px;
+  border-bottom: 2px solid #eee;
+  padding: 12px;
+  text-align: left;
+  transition: background-color 0.3s;
+  /* Smooth transition for hover effect */
+}
+.data-item:last-child {
+  border-bottom: none;
+}
+.data-item:hover {
+  background-color: #e9ecef;
+  /* Slight hover effect */
+}
+@media (max-width: 768px) {
+  .data-list {
+    width: 95%;
+    /* More width on smaller screens */
+  }
+}
+.status-free {
+  color: green;
+}
+.status-occupied {
+  color: red;
+}
+/* Additional Styling */
+.status-label {
+  font-weight: bold;
+  /* Make status text bold */
+  margin-right: 5px;
+  /* Spacing between emoji and text */
+}
+.timestamp {
+  color: #6c757d;
+  /* Grey color for timestamp */
+  font-size: 14px;
+  /* Smaller font for timestamp */
+}
+/* parkingLayout */
+#parkingLayout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  padding: 20px;
+}
+.parking-spot {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+}
+.spot-id {
+  font-weight: bold;
+}
+.spot-status {
+  font-size: 24px;
+}
