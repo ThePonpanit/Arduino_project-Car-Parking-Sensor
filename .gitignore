@@ -18,6 +18,3 @@ pip-log.txt
 # Specific files
 config.py
 CREDENTIALS.json
-
-# Google Cloud specific
-.gcloudignore
