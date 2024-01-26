@@ -41,6 +41,7 @@
 
 venv/
 Firebase-functions/
+web application/
 
 # Ignored All .css
 

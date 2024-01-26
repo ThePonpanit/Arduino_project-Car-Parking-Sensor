@@ -7,8 +7,9 @@ import os
 
 app = FastAPI()
 
-class DeleteRequest(BaseModel):
-    uids: List[str]
+class SensorData(BaseModel):
+    uid: str
+    distance: int
 
 # Load environment variables in development environment
 if os.environ.get("ENV") == "development":
@@ -27,18 +28,14 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
 # Initialize Firestore client
 db = firestore.Client()
 
-class SensorData(BaseModel):
-    uid: str
-    distance: int
-
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to my FastAPI application!"}
+    return {"message": "Welcome to my FastAPI application! Version 2.0"}
 
 @app.post("/receive_data")
 async def receive_data(sensor_data: List[SensorData]):
     for data in sensor_data:
-        status = "Occupied" if data.distance < 100 else "Free"
+        status = "Occupied" if data.distance < 200 else "Free"  # Threshold updated to match Arduino code
         # Add data to Firestore
         doc_ref = db.collection('parking_sensors').document()
         doc_ref.set({
