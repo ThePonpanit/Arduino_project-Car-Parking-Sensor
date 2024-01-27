@@ -4,6 +4,8 @@ from typing import List
 from google.cloud import firestore
 from datetime import datetime
 import os
+import pytz
+
 
 app = FastAPI()
 
@@ -28,24 +30,51 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
 # Initialize Firestore client
 db = firestore.Client()
 
+from datetime import datetime
+
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to my FastAPI application! Version 2.0"}
+    # Get the UTC+7 timezone
+    utc_plus_7 = pytz.timezone('Asia/Bangkok')
+    current_utc_time = datetime.now(utc_plus_7)
+    
+    changelog = {
+        "Version 3.1": [
+            "# Dynamic creation of Firestore collections based on the current date.",
+            "# Each collection is named 'parking_sensors_YYYYMMDD' to store daily sensor data.",
+            "# Deletion endpoint updated to specify the date or range of dates for deletion.",
+            "# Fix Time Zone to UTC+7."
+        ]
+    }
+    return {"message": "Welcome to my FastAPI application!", "changelog": changelog, "current_utc_time": current_utc_time}
+
 
 @app.post("/receive_data")
 async def receive_data(sensor_data: List[SensorData]):
+    # Get the UTC+7 timezone
+    utc_plus_7 = pytz.timezone('Asia/Bangkok')
+    
+    # Convert the current time to UTC+7
+    current_time = datetime.now(utc_plus_7)
+    
+    # Generate a collection name based on the current date in UTC+7
+    collection_name = f"parking_sensors_{current_time.strftime('%Y%m%d')}"
+
     for data in sensor_data:
-        status = "Occupied" if data.distance < 200 else "Free"  # Threshold updated to match Arduino code
-        # Add data to Firestore
-        doc_ref = db.collection('parking_sensors').document()
+        status = "Occupied" if data.distance < 200 else "Free"
+        # Convert the timestamp to UTC+7 and add data to Firestore in the date-specific collection
+        timestamp_utc_plus_7 = current_time.astimezone(pytz.utc)
+        doc_ref = db.collection(collection_name).document()
         doc_ref.set({
             'uid': data.uid,
             'distance': data.distance,
-            'timestamp': datetime.utcnow(),
+            'timestamp': timestamp_utc_plus_7,
             'status': status
         })
 
     return {"message": "Data processed and stored in Firestore"}
+
+
 
 @app.get("/_ah/health")
 def health_check():
@@ -53,8 +82,13 @@ def health_check():
 
 @app.delete("/delete_data/{uid}")
 async def delete_data(uid: str):
+    # You need to specify the date or range of dates for deletion
+    # For example, delete from a specific date's collection
+    date_for_deletion = "20240101"  # Example date
+    collection_name = f"parking_sensors_{date_for_deletion}"
+
     # Query Firestore to find the document with the given UID
-    docs = db.collection('parking_sensors').where('uid', '==', uid).stream()
+    docs = db.collection(collection_name).where('uid', '==', uid).stream()
 
     deleted = False
     for doc in docs:
