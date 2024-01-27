@@ -84,11 +84,12 @@ async def receive_data(sensor_data: List[SensorData]):
 def health_check():
     return {"status": "healthy"}
 
-@app.delete("/delete_data/{uid}")
-async def delete_data(uid: str):
-    # You need to specify the date or range of dates for deletion
-    # For example, delete from a specific date's collection
-    date_for_deletion = "20240101"  # Example date
+@app.delete("/delete_data/{date_for_deletion}/{uid}")
+async def delete_data(date_for_deletion: str, uid: str):
+    # Check if the provided date_for_deletion is in the correct format (YYYYMMDD)
+    if not date_for_deletion.isdigit() or len(date_for_deletion) != 8:
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYYMMDD.")
+
     collection_name = f"parking_sensors_{date_for_deletion}"
 
     # Query Firestore to find the document with the given UID
@@ -103,4 +104,4 @@ async def delete_data(uid: str):
     if not deleted:
         raise HTTPException(status_code=404, detail=f"Document with UID {uid} not found")
     
-    return {"message": f"Document with UID {uid} deleted successfully"}
+    return {"message": f"Document with UID {uid} deleted successfully from collection {collection_name}"}
