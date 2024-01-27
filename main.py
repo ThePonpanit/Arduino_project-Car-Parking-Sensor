@@ -37,16 +37,20 @@ def read_root():
     # Get the UTC+7 timezone
     utc_plus_7 = pytz.timezone('Asia/Bangkok')
     current_utc_time = datetime.now(utc_plus_7)
+
+    # Show the collection name based on the current date in UTC+7
+    collection_name = f"parking_sensors_{current_utc_time.strftime('%Y%m%d')}"
     
     changelog = {
-        "Version 3.1": [
+        "Version 3.2": [
             "# Dynamic creation of Firestore collections based on the current date.",
             "# Each collection is named 'parking_sensors_YYYYMMDD' to store daily sensor data.",
             "# Deletion endpoint updated to specify the date or range of dates for deletion.",
-            "# Fix Time Zone to UTC+7."
+            "# Fix Time Zone to UTC+7.",
+            "# Add error handling."
         ]
     }
-    return {"message": "Welcome to my FastAPI application!", "changelog": changelog, "current_utc_time": current_utc_time}
+    return {"message": "Welcome to my FastAPI application!", "changelog": changelog, "current_utc_time": current_utc_time, "Firestore collection_name": collection_name}
 
 
 @app.post("/receive_data")
