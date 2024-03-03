@@ -42,13 +42,14 @@ def read_root():
     collection_name = f"parking_sensors_{current_utc_time.strftime('%Y%m%d')}"
     
     changelog = {
-        "Version 4.0": [
+        "Version 4.1": [
             "# Dynamic creation of Firestore collections based on the current date.",
             "# Each collection is named 'parking_sensors_YYYYMMDD' to store daily sensor data.",
             "# Deletion endpoint updated to specify the date or range of dates for deletion.",
             "# Fix Time Zone to UTC+7.",
             "# Add error handling.",
-            "# Update /delete_data/ endpoint."
+            "# Update /delete_data/ endpoint.",
+            '# Set the range to 200 cm.'
         ]
     }
     return {"message": "Welcome to my FastAPI application!", "changelog": changelog, "current_utc_time": current_utc_time, "Firestore collection_name": collection_name}
